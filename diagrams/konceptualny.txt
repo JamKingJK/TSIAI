@@ -1,0 +1,54 @@
+@startuml
+
+entity article {
+    * article_id
+    * title 
+    * content
+    * author
+    * created_at
+    * source
+    * likes
+    * status
+}
+
+entity comment {
+    * comment_id
+    * article_id
+    * user_id
+    * content
+    * time_added
+    * likes
+}
+
+entity group {
+    * group_id: serial
+    * group_name:
+}
+
+entity permission {
+    * permission_id: 
+    * permission_name:
+}
+
+entity group_permission{
+    * group_id:
+    * permission_id:
+}
+
+entity user{
+    * user_id
+    * nickname
+    * permission
+    * password
+    * email
+    * sum_likes
+}
+
+group --|{ user
+group --|{ group_permission
+permission --|{ group_permission
+user --|{ article
+user --|{ comment
+comment --|{ article
+
+@enduml
