@@ -1,0 +1,18 @@
+{
+    "name": "igormaculewicz/backend",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "App/"
+        }
+    },
+    "require": {
+        "ext-pdo": "*",
+      "ext-json": "*",
+        "bramus/router": "^1.5",
+        "zeptech/annotations": "1.1.0",
+        "haydenpierce/class-finder": "^0.4.3",
+        "symfony/serializer": "v3.3.0",
+        "symfony/property-access": "v3.3.0"
+    }
+}
