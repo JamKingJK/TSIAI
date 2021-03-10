@@ -4,20 +4,16 @@
 namespace App\Router;
 
 
+use App\Controller\UserController;
+use App\Helpers\HttpHeadersHelper;
 use App\Serializer\JsonSerializer;
 
 class RestBodyReader {
 
-    public static function readBody($classReference = null) {
+    public static function readRequestBody($classReference = null) {
         $rawBody = file_get_contents('php://input');
 
-        $headers = array();
-
-        foreach (getallheaders() as $key => $value) {
-            $headers[strtolower($key)] = $value;
-        }
-
-        if ($headers["content-type"] === "application/json") {
+        if (HttpHeadersHelper::getHttpHeader("content-type") === "application/json") {
             if (empty($classReference)) {
                 return json_decode($rawBody);
             } else {

@@ -1,6 +1,8 @@
 <?php namespace App\Router;
 
-use App\Helpers\ReflectionUtils;
+use App\Helpers\HttpHeadersHelper;
+use App\Helpers\JwtHelper;
+use App\Helpers\ReflectionHelper;
 use Bramus\Router\Router;
 use HaydenPierce\ClassFinder\ClassFinder;
 use ReflectionClass;
@@ -10,6 +12,7 @@ class RestRouter {
 
     const CONTROLLER_ANNOTATION_NAME = "Controller";
     const ACTION_ANNOTATION_NAME = "Action";
+    const AUTHORIZED_ANNOTATION_NAME = "Authorized";
     const PATH_PARAMETER_NAME = "path";
     const METHOD_PARAMETER_NAME = "method";
     const MAIN_NAMESPACE = "App";
@@ -28,7 +31,7 @@ class RestRouter {
                 header('Content-type: application/json');
             });
 
-            self::autoloadRoutes();
+            self::autoloadRoutes();;
 
             self::$router->run();
         }
@@ -38,6 +41,7 @@ class RestRouter {
      * @param $classname
      * @throws \ReflectionException
      * @throws \zpt\anno\ReflectorNotCommentedException
+     * @throws \Exception
      */
     private static function registerRoutes($classname) {
 
@@ -48,7 +52,13 @@ class RestRouter {
             return;
         }
 
-        $controllerPath = $classAnnotations[self::CONTROLLER_ANNOTATION_NAME][self::PATH_PARAMETER_NAME];
+        $controllerPath = isset($classAnnotations[self::CONTROLLER_ANNOTATION_NAME][self::PATH_PARAMETER_NAME])
+            ? $classAnnotations[self::CONTROLLER_ANNOTATION_NAME][self::PATH_PARAMETER_NAME]
+            : null;
+
+        if (empty($controllerPath)) {
+            throw new \Exception(sprintf("Path is empty in %s controller!", $classname));
+        }
 
         foreach ($classReflector->getMethods() as $methodReflector) {
             self::registerRoute($controllerPath, $methodReflector);
@@ -68,24 +78,40 @@ class RestRouter {
             return;
         }
 
-        $actionMethod = strtoupper($methodAnnotations[self::ACTION_ANNOTATION_NAME][self::METHOD_PARAMETER_NAME]);
+        $methodIdentifier = ReflectionHelper::getFullMethodIdentifier($methodReflector);
 
-        $actionPath = $methodAnnotations[self::ACTION_ANNOTATION_NAME][self::PATH_PARAMETER_NAME];
+        $actionMethod = isset($methodAnnotations[self::ACTION_ANNOTATION_NAME][self::METHOD_PARAMETER_NAME])
+            ? $methodAnnotations[self::ACTION_ANNOTATION_NAME][self::METHOD_PARAMETER_NAME]
+            : null;
+
+        if (empty($actionMethod)) {
+            throw new \Exception(sprintf("Method cannot be empty in action of %s method!", $methodIdentifier));
+        }
+
+        $actionMethod = strtoupper($actionMethod);
+
+        $actionPath = isset($methodAnnotations[self::ACTION_ANNOTATION_NAME][self::PATH_PARAMETER_NAME])
+            ? $methodAnnotations[self::ACTION_ANNOTATION_NAME][self::PATH_PARAMETER_NAME]
+            : null;
 
         $path = !empty($actionPath) ? $controllerPath . $actionPath : $controllerPath;
 
+        if ($methodAnnotations->hasAnnotation(self::AUTHORIZED_ANNOTATION_NAME)) {
+            self::registerAuthorization($actionMethod, $path);
+        }
+
         switch ($actionMethod) {
             case "GET":
-                self::$router->get($path, ReflectionUtils::getFullMethodIdentifier($methodReflector));
+                self::$router->get($path, $methodIdentifier);
                 break;
             case "POST":
-                self::$router->post($path, ReflectionUtils::getFullMethodIdentifier($methodReflector));
+                self::$router->post($path, $methodIdentifier);
                 break;
             case "PUT":
-                self::$router->put($path, ReflectionUtils::getFullMethodIdentifier($methodReflector));
+                self::$router->put($path, $methodIdentifier);
                 break;
             case "DELETE":
-                self::$router->delete($path, ReflectionUtils::getFullMethodIdentifier($methodReflector));
+                self::$router->delete($path, $methodIdentifier);
                 break;
             default:
                 throw new \Exception("Unhandled action method!");
@@ -98,5 +124,18 @@ class RestRouter {
         foreach ($classes as $class) {
             self::registerRoutes($class);
         }
+    }
+
+    private static function registerAuthorization($actionMethod, $path) {
+        self::$router->before($actionMethod, $path, function () {
+            $bearerToken = HttpHeadersHelper::getTokenForRequest();
+
+            $isTokenValid = JwtHelper::verifyToken($bearerToken);
+
+            if (!$isTokenValid) {
+                http_response_code(401);
+                die();
+            }
+        });
     }
 }
