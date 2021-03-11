@@ -1,5 +1,5 @@
 {
-    "name": "igormaculewicz/backend",
+    "name": "serwis_historyczny/backend",
     "type": "project",
     "autoload": {
         "psr-4": {
