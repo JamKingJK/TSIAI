@@ -60,9 +60,9 @@ CREATE TABLE `comment` (
 --
 
 CREATE TABLE `group` (
-  `group_id` bigint(20) UNSIGNED NOT NULL,
-  `group_name` text COLLATE utf8_polish_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(64) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -74,7 +74,7 @@ CREATE TABLE `group_permission` (
   `composite_key` int(11) NOT NULL,
   `group_id` bigint(20) UNSIGNED NOT NULL,
   `permission_id` bigint(20) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -85,7 +85,7 @@ CREATE TABLE `group_permission` (
 CREATE TABLE `permission` (
   `permission_id` bigint(20) UNSIGNED NOT NULL,
   `permission_name` text COLLATE utf8_polish_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -94,14 +94,14 @@ CREATE TABLE `permission` (
 --
 
 CREATE TABLE `user` (
-  `user_id` int(10) UNSIGNED NOT NULL,
+  `id` int(10) UNSIGNED NOT NULL,
   `group_id` bigint(20) UNSIGNED NOT NULL,
-  `username` text COLLATE utf8_polish_ci NOT NULL,
-  `password_hash` text COLLATE utf8_polish_ci NOT NULL,
-  `salt` text COLLATE utf8_polish_ci NOT NULL,
+  `username` varchar(32) NOT NULL,
+  `password` text NOT NULL,
+  `salt` text NOT NULL,
   `last_login` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Indeksy dla zrzutów tabel
@@ -123,7 +123,8 @@ ALTER TABLE `comment`
 -- Indeksy dla tabeli `group`
 --
 ALTER TABLE `group`
-  ADD PRIMARY KEY (`group_id`);
+    ADD PRIMARY KEY (`id`),
+    ADD UNIQUE KEY `name` (`name`);
 
 --
 -- Indeksy dla tabeli `permission`
@@ -135,8 +136,9 @@ ALTER TABLE `permission`
 -- Indeksy dla tabeli `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`user_id`);
-
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD KEY `group_id` (`group_id`);
 --
 -- AUTO_INCREMENT for dumped tables
 --
@@ -157,7 +159,7 @@ ALTER TABLE `comment`
 -- AUTO_INCREMENT dla tabeli `group`
 --
 ALTER TABLE `group`
-  MODIFY `group_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+    MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT dla tabeli `permission`
@@ -169,7 +171,7 @@ ALTER TABLE `permission`
 -- AUTO_INCREMENT dla tabeli `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
