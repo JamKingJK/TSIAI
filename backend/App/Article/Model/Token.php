@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\User\Model;
+namespace App\Article\Model;
 
 
 class Token {

@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'e8b894f36aa88cb2b52113abbfd04367d517e1c2',
+    'reference' => '06624952b70b65ac35305da8866f6e4924705789',
     'name' => 'serwis_historyczny/backend',
   ),
   'versions' => 
@@ -45,7 +45,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'e8b894f36aa88cb2b52113abbfd04367d517e1c2',
+      'reference' => '06624952b70b65ac35305da8866f6e4924705789',
     ),
     'symfony/inflector' => 
     array (

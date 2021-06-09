@@ -5,21 +5,21 @@ namespace App\Article\Controller;
 
 use App\Router\RestBodyReader;
 use App\Serializer\JsonSerializer;
-use App\Article\Model\UserRequest;
-use App\Article\Service\UserService;
+use App\Article\Model\ArticleRequest;
+use App\Article\Service\ArticleService;
 
 /**
  * @Controller(path="/article")
  */
 class ArticleController{
 
-    private $userService;
+    private $articleService;
 
     /**
      * ArticleController constructor.
      */
     public function __construct() {
-        $this->userService = new UserService();
+        $this->articleService = new ArticleService();
     }
 
 
@@ -27,7 +27,7 @@ class ArticleController{
      * @Authorized(permission="GET_USER_PERMISSION")
      * @Action(method="GET")
      */
-    public function getUsers() {
+    public function getArticles() {
         echo json_encode(array("test" => "test"));
     }
 
@@ -35,36 +35,36 @@ class ArticleController{
      * @Action(method="POST")
      */
     public
-    function addUser() {
-        /** @var UserRequest $userRequest */
-        $userRequest = RestBodyReader::readRequestBody(UserRequest::class);
+    function addArticle() {
+        /** @var ArticleRequest $articleRequest */
+        $articleRequest = RestBodyReader::readRequestBody(ArticleRequest::class);
 
-        $createdUser = $this->userService->addUser($userRequest->getUsername(), $userRequest->getPassword());
+        $createdArticle = $this->articleService->addArticle($articleRequest->getArticleId(), $articleRequest->getTitle(), $articleRequest->getContent());
 
-        echo JsonSerializer::getInstance()->serialize($createdUser, 'json');
+        echo JsonSerializer::getInstance()->serialize($createdArticle, 'json');
     }
 
     /**
      * @Action(method="GET", path="/{id}")
      */
     public
-    function getUser($id) {
-        echo JsonSerializer::getInstance()->serialize($this->userService->getUser($id), 'json');
+    function getArticle($id) {
+        echo JsonSerializer::getInstance()->serialize($this->articleService->getArticle($id), 'json');
     }
 
     /**
      * @Action(method="PUT", path="/{id}")
      */
     public
-    function updateUser($id) {
-        echo sprintf("Updated user with id: %s", $id);
+    function updateArticle($id) {
+        echo sprintf("Updated article with id: %s", $id);
     }
 
     /**
      * @Action(method="DELETE", path="/{id}")
      */
     public
-    function deleteUser($id) {
-        echo sprintf("Deleted user with id: %s", $id);
+    function deleteArticle($id) {
+        echo sprintf("Deleted article with id: %s", $id);
     }
 }

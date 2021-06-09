@@ -1,49 +1,44 @@
 <?php
 
 
-namespace App\User\Service;
+namespace App\Article\Service;
 
 
 use App\Database\Entity\EntityMapper;
-use App\User\Entity\UserEntity;
-use App\User\Model\UserModel;
-use App\User\Repository\UserRepository;
+use App\Article\Entity\ArticleEntity;
+use App\Article\Model\ArticleModel;
+use App\Article\Repository\ArticleRepository;
 
-class UserService {
+class ArticleService {
 
     const USER_GROUP_ID = 1;
-    private $userRepository;
+    private $articleRepository;
 
     /**
      * UserService constructor.
      */
     public function __construct() {
-        $this->userRepository = new UserRepository();
+        $this->articleRepository = new ArticleRepository();
     }
 
 
-    public function getUser($id) {
-        $userEntity = $this->userRepository->getById($id);
+    public function getArticle($id) {
+        $articleEntity = $this->articleRepository->getById($id);
 
-        return EntityMapper::mapEntityToResponse($userEntity, UserModel::class);
+        return EntityMapper::mapEntityToResponse($articleEntity, ArticleModel::class);
     }
 
-    public function addUser($username, $password) {
-        $userEntity = new UserEntity();
+    public function addArticle($article_id, $title, $content) {
+        $articleEntity = new ArticleEntity();
 
         $salt = uniqid("", true);
 
-        $userEntity->setUsername($username)
-            ->setPassword(sha1($password . $salt))
-            ->setGroupId(self::USER_GROUP_ID)
-            ->setSalt($salt);
+        $articleEntity->setArticleId($article_id)
+            ->setTitle($title)
+            ->setContent($content);
 
-        $createdUser = $this->userRepository->save($userEntity);
+        $createdArticle = $this->articleRepository->save($articleEntity);
 
-        return EntityMapper::mapEntityToResponse($createdUser, UserModel::class);
-    }
-
-    public function isUserWithPasswordExists($username, $password) {
-        return $this->userRepository->isUserWithPasswordExists($username, $password);
+        return EntityMapper::mapEntityToResponse($createdArticle, ArticleModel::class);
     }
 }

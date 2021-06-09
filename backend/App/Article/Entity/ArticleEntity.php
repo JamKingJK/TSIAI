@@ -1,120 +1,67 @@
 <?php
 
 
-namespace App\User\Entity;
+namespace App\Article\Entity;
 
 
 use App\Database\Entity\Entity;
 
-class UserEntity extends Entity {
+class ArticleEntity extends Entity {
 
-    private $id;
-    private $group_id;
-    private $username;
-    private $password;
-    private $salt;
-    private $last_login;
+    private $article_id;
+    private $title;
+    private $content;
+    private $author;
     private $created_at;
+    private $sources;
+    private $likes;
+    private $status;
 
-    /**
-     * @return mixed
-     */
-    public function getId() {
-        return $this->id;
+    public function getId()
+    {
+        return $this->article_id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getGroupId() {
-        return $this->group_id;
-    }
-
-    /**
-     * @param mixed $group_id
-     * @return UserEntity
-     */
-    public function setGroupId($group_id) {
-        $this->group_id = $group_id;
+    public function setArticleId($article_id) {
+        $this->article_id = $article_id;
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getUsername() {
-        return $this->username;
+    public function getTitleId() {
+        return $this->title;
     }
 
-    /**
-     * @param mixed $username
-     * @return UserEntity
-     */
-    public function setUsername($username) {
-        $this->username = $username;
+    public function setTitle($title) {
+        $this->title = $title;
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getPassword() {
-        return $this->password;
+    public function getContent() {
+        return $this->content;
+    }
+    public function setContent($content) {
+        $this->content = $content;
+        return $this->content;
     }
 
-    /**
-     * @param mixed $password
-     * @return UserEntity
-     */
-    public function setPassword($password) {
-        $this->password = $password;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLastLogin() {
-        return $this->last_login;
-    }
-
-    /**
-     * @param mixed $last_login
-     * @return UserEntity
-     */
-    public function setLastLogin($last_login) {
-        $this->last_login = $last_login;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getCreatedAt() {
         return $this->created_at;
     }
 
-    /**
-     * @param mixed $created_at
-     * @return UserEntity
-     */
-    public function setCreatedAt($created_at) {
-        $this->created_at = $created_at;
-        return $this;
+    public function getAuthor() {
+        return $this->author;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSalt() {
-        return $this->salt;
+    public function getSources() {
+        return $this->sources;
     }
 
-    /**
-     * @param mixed $salt
-     */
-    public function setSalt($salt) {
-        $this->salt = $salt;
-        return $this;
+    public function getLikes() {
+        return $this->likes;
     }
+
+    public function getStatus() {
+        return $this->status;
+    }
+
 }

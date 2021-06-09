@@ -11,7 +11,7 @@ class DatabaseConnector {
     private static $databaseConnection;
 
     //TODO Consider to move it to configuration
-    const DSN = "mysql:host=127.0.0.1;dbname=weather_service";
+    const DSN = "mysql:host=127.0.0.1;dbname=serwis_his";
     const DATABASE_USERNAME = "root";
     const DATABASE_PASSWORD = "";
 

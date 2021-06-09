@@ -1,19 +1,18 @@
 <?php
 
 
-namespace App\User\Model;
+namespace App\Article\Model;
 
 
 class ArticleModel
 {
     private $article_id;
-    private $title_id;
+    private $title;
     private $content;
     private $author;
     private $created_at;
-    private $sources;
     private $likes;
-    private $status;
+
 
     public function getArticleId() {
         return $this->article_id;
@@ -24,12 +23,12 @@ class ArticleModel
         return $this;
     }
 
-    public function getTitleId() {
-        return $this->title_id;
+    public function getTitle() {
+        return $this->title;
     }
 
-    public function setTitleId($title_id) {
-        $this->title_id = $title_id;
+    public function setTitle($title) {
+        $this->title = $title;
         return $this;
     }
 
@@ -37,8 +36,17 @@ class ArticleModel
         return $this->content;
     }
 
+    public function getCreatedAt() {
+        return $this->created_at;
+    }
 
+    public function getAuthor() {
+        return $this->author;
+    }
 
+    public function getLikes() {
+        return $this->likes;
+    }
 
 
 }
