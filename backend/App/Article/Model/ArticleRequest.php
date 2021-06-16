@@ -8,7 +8,6 @@ class ArticleRequest {
 
     private $content;
     private $title;
-    private $article_id;
 
     /**
      * @return mixed
@@ -40,8 +39,5 @@ class ArticleRequest {
     public function setTitle($title) {
         $this->title = $title;
         return $this;
-    }
-    public function getArticleId() {
-        return $this->article_id;
     }
 }

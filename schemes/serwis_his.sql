@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 18 Gru 2020, 08:36
+-- Czas generowania: 16 Cze 2021, 23:22
 -- Wersja serwera: 10.4.11-MariaDB
 -- Wersja PHP: 7.4.6
 
@@ -28,15 +28,22 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `article` (
-  `article_id` int(10) UNSIGNED NOT NULL,
+  `id` int(10) UNSIGNED NOT NULL,
   `title` text NOT NULL,
   `content` text NOT NULL,
-  `author` int(10) UNSIGNED NOT NULL,
+  `author` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `source` text NOT NULL,
+  `sources` text NOT NULL,
   `likes` int(11) NOT NULL,
   `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Zrzut danych tabeli `article`
+--
+
+INSERT INTO `article` (`id`, `title`, `content`, `author`, `created_at`, `sources`, `likes`, `status`) VALUES
+(1, 'catchy title', 'sdomethinfdgs', '', '2021-06-16 21:19:42', '', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -64,6 +71,13 @@ CREATE TABLE `group` (
   `name` varchar(64) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Zrzut danych tabeli `group`
+--
+
+INSERT INTO `group` (`id`, `name`) VALUES
+(1, 'group');
+
 -- --------------------------------------------------------
 
 --
@@ -84,7 +98,7 @@ CREATE TABLE `group_permission` (
 
 CREATE TABLE `permission` (
   `permission_id` bigint(20) UNSIGNED NOT NULL,
-  `permission_name` text COLLATE utf8_polish_ci NOT NULL
+  `permission_name` text CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -104,6 +118,13 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Zrzut danych tabeli `user`
+--
+
+INSERT INTO `user` (`id`, `group_id`, `username`, `password`, `salt`, `last_login`, `created_at`) VALUES
+(1, 1, 'admin', 'af076eaeb0d540806640612e41263f165808775c', '60ca6a671482e1.56754791', '2021-06-16 21:17:27', '2021-06-16 21:17:27');
+
+--
 -- Indeksy dla zrzutów tabel
 --
 
@@ -111,7 +132,7 @@ CREATE TABLE `user` (
 -- Indeksy dla tabeli `article`
 --
 ALTER TABLE `article`
-  ADD PRIMARY KEY (`article_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indeksy dla tabeli `comment`
@@ -123,8 +144,8 @@ ALTER TABLE `comment`
 -- Indeksy dla tabeli `group`
 --
 ALTER TABLE `group`
-    ADD PRIMARY KEY (`id`),
-    ADD UNIQUE KEY `name` (`name`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`);
 
 --
 -- Indeksy dla tabeli `permission`
@@ -139,6 +160,7 @@ ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `username` (`username`),
   ADD KEY `group_id` (`group_id`);
+
 --
 -- AUTO_INCREMENT for dumped tables
 --
@@ -147,7 +169,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT dla tabeli `article`
 --
 ALTER TABLE `article`
-  MODIFY `article_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT dla tabeli `comment`
@@ -159,7 +181,7 @@ ALTER TABLE `comment`
 -- AUTO_INCREMENT dla tabeli `group`
 --
 ALTER TABLE `group`
-    MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT dla tabeli `permission`
@@ -171,7 +193,7 @@ ALTER TABLE `permission`
 -- AUTO_INCREMENT dla tabeli `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

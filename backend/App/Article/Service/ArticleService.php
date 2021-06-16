@@ -11,11 +11,10 @@ use App\Article\Repository\ArticleRepository;
 
 class ArticleService {
 
-    const USER_GROUP_ID = 1;
     private $articleRepository;
 
     /**
-     * UserService constructor.
+     * ArticleService constructor.
      */
     public function __construct() {
         $this->articleRepository = new ArticleRepository();
@@ -28,13 +27,11 @@ class ArticleService {
         return EntityMapper::mapEntityToResponse($articleEntity, ArticleModel::class);
     }
 
-    public function addArticle($article_id, $title, $content) {
+    public function addArticle($title, $content) {
         $articleEntity = new ArticleEntity();
 
-        $salt = uniqid("", true);
 
-        $articleEntity->setArticleId($article_id)
-            ->setTitle($title)
+        $articleEntity->setTitle($title)
             ->setContent($content);
 
         $createdArticle = $this->articleRepository->save($articleEntity);

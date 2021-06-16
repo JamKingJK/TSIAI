@@ -39,13 +39,14 @@ class ArticleController{
         /** @var ArticleRequest $articleRequest */
         $articleRequest = RestBodyReader::readRequestBody(ArticleRequest::class);
 
-        $createdArticle = $this->articleService->addArticle($articleRequest->getArticleId(), $articleRequest->getTitle(), $articleRequest->getContent());
+        $createdArticle = $this->articleService->addArticle($articleRequest->getTitle(), $articleRequest->getContent());
 
         echo JsonSerializer::getInstance()->serialize($createdArticle, 'json');
     }
 
     /**
      * @Action(method="GET", path="/{id}")
+     * @param $id
      */
     public
     function getArticle($id) {
@@ -54,6 +55,7 @@ class ArticleController{
 
     /**
      * @Action(method="PUT", path="/{id}")
+     * @param $id
      */
     public
     function updateArticle($id) {
@@ -62,6 +64,7 @@ class ArticleController{
 
     /**
      * @Action(method="DELETE", path="/{id}")
+     * @param $id
      */
     public
     function deleteArticle($id) {

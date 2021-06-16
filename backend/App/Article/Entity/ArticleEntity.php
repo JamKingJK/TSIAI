@@ -22,12 +22,7 @@ class ArticleEntity extends Entity {
         return $this->article_id;
     }
 
-    public function setArticleId($article_id) {
-        $this->article_id = $article_id;
-        return $this;
-    }
-
-    public function getTitleId() {
+    public function getTitle() {
         return $this->title;
     }
 
@@ -47,20 +42,40 @@ class ArticleEntity extends Entity {
     public function getCreatedAt() {
         return $this->created_at;
     }
+    public function setCreatedAt($createdAt) {
+        $this->created_at = $createdAt;
+        return $this->created_at;
+    }
 
     public function getAuthor() {
+        return $this->author;
+    }
+    public function setAuthor($author) {
+        $this->author = $author;
         return $this->author;
     }
 
     public function getSources() {
         return $this->sources;
     }
+    public function setSources($sources) {
+        $this->sources = $sources;
+        return $this->sources;
+    }
 
     public function getLikes() {
         return $this->likes;
     }
+    public function setLikes($likes) {
+        $this->likes = $likes;
+        return $this->likes;
+    }
 
     public function getStatus() {
+        return $this->status;
+    }
+    public function setStatus($status) {
+        $this->status = $status;
         return $this->status;
     }
 
