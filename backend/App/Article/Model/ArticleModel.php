@@ -6,27 +6,9 @@ namespace App\Article\Model;
 
 class ArticleModel
 {
-    private $article_id;
     private $title;
     private $content;
-    private $author;
     private $created_at;
-    private $likes;
-
-    /**
-     * @return mixed
-     */
-    public function getArticleId() {
-        return $this->article_id;
-    }
-    /**
-     * @param mixed $article_id
-     * @return ArticleModel
-     */
-    public function setArticleId($article_id) {
-        $this->article_id = $article_id;
-        return $this;
-    }
 
     /**
      * @return mixed
@@ -50,6 +32,14 @@ class ArticleModel
     public function getContent() {
         return $this->content;
     }
+    /**
+     * @param mixed $content
+     * @return ArticleModel
+     */
+    public function setContent($content) {
+        $this->content = $content;
+        return $this;
+    }
 
     /**
      * @return mixed
@@ -58,25 +48,12 @@ class ArticleModel
         return $this->created_at;
     }
     /**
-     * @return mixed
-     */
-    public function getAuthor() {
-        return $this->author;
-    }
-    /**
-     * @param mixed $author
+     * @param mixed $created_at
      * @return ArticleModel
      */
-    public function setAuthor($author) {
-        $this->author = $author;
+    public function setCreatedAt($created_at) {
+        $this->created_at = $created_at;
         return $this;
     }
-    /**
-     * @return mixed
-     */
-    public function getLikes() {
-        return $this->likes;
-    }
-
 
 }
